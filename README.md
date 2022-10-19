@@ -17,6 +17,7 @@ A Telegram bot that upscale photo with Real-ESRGAN-ncnn-vulkan
 1. Install dependent packages
 
     ```bash
+    chmod +x ./install_realesrgan-ncnn-vulkan.sh
     bash ./install_realesrgan-ncnn-vulkan.sh
     ```
 
