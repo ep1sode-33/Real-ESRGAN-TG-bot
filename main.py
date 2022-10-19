@@ -4,19 +4,14 @@ import json
 from retrying import retry
 from telethon import TelegramClient, events
 from tg_bot_config import api_hash, api_id, bot_token
-
+global model_list
+model_list = ["realesr-animevideov3","realesrgan-x4plus","realesrgan-x4plus-anime","realesrnet-x4plus"]
+global models
+models = "realesr-animevideov3"
 client = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 @client.on(events.NewMessage(incoming=True))
 async def my_event_handler(event):
     if event.message.media != None:
-        try:
-            models
-        except NameError:
-            models = "realesr-animevideov3"
-        try:
-            model_list
-        except NameError:
-            model_list = ["realesr-animevideov3","realesrgan-x4plus","realesrgan-x4plus-anime","realesrnet-x4plus"]
         name = str(uuid.uuid4())
         oldfilename = await event.message.download_media(name)
         file_end = ""
@@ -36,14 +31,6 @@ async def my_event_handler(event):
         else:
             print("invalid incoming photo")
     else:
-        try:
-            models
-        except NameError:
-            models = "realesr-animevideov3"
-        try:
-            model_list
-        except NameError:
-            model_list = ["realesr-animevideov3","realesrgan-x4plus","realesrgan-x4plus-anime","realesrnet-x4plus"]
         if event.raw_text == "/clean_cache":
             os.system("rm ./*.jpg")
             os.system("rm ./*.png")
