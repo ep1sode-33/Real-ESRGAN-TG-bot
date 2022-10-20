@@ -4,13 +4,13 @@ import json
 from retrying import retry
 from telethon import TelegramClient, events
 from tg_bot_config import api_hash, api_id, bot_token
-global model_list
 model_list = ["realesr-animevideov3","realesrgan-x4plus","realesrgan-x4plus-anime","realesrnet-x4plus"]
-global models
 models = "realesr-animevideov3"
 client = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 @client.on(events.NewMessage(incoming=True))
 async def my_event_handler(event):
+    global model_list
+    global models
     if event.message.media != None:
         name = str(uuid.uuid4())
         oldfilename = await event.message.download_media(name)
@@ -40,7 +40,7 @@ async def my_event_handler(event):
             await event.reply("目前的模型是 " + models + " , 可用模型: realesr-animevideov3 | realesrgan-x4plus | realesrgan-x4plus-anime | realesrnet-x4plus")
         if event.raw_text[:6] == "/model":
             if event.raw_text[7:] in model_list:
-                model = event.raw_text[7:]
+                models = event.raw_text[7:]
                 await event.reply("成功切换模型到: " + models)
             else:
                 await event.reply("不支持的模型")
@@ -50,6 +50,6 @@ async def my_event_handler(event):
             Real-ESRGAN项目地址: https://github.com/xinntao/Real-ESRGAN
             本项目地址: https://github.com/keep1earning/Real-ESRGAN-TG-bot
             ''')
-
+            
 client.start()
 client.run_until_disconnected()
