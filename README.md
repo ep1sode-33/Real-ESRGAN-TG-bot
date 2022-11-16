@@ -19,6 +19,7 @@ A Telegram bot that upscale photo with Real-ESRGAN-ncnn-vulkan
     ```bash
     chmod +x ./install_realesrgan-ncnn-vulkan.sh
     bash ./install_realesrgan-ncnn-vulkan.sh
+    pip install -r requirements.txt
     ```
 
 2.  Input api_id & api_ash & bot_token in tg_bot_config.py
