@@ -47,5 +47,5 @@ jobs:
           
       - uses: actions/upload-artifact@v3
         with:
-          name: TikTokDownload-Multi-GUI-linux
+          name: Real-ESRGAN-TG-bot-linux
           path: /home/runner/work/Real-ESRGAN-TG-bot/Real-ESRGAN-TG-bot/dist/main
