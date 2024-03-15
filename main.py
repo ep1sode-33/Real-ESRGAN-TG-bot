@@ -3,6 +3,14 @@ import uuid
 from telethon import TelegramClient, events
 from tg_bot_config import api_hash, api_id, bot_token
 
+def load_config(filename="tg_bot_config.txt"):
+    config = {}
+    with open(filename, 'r') as file:
+        for line in file:
+            key, value = line.strip().split('=', 1)
+            config[key] = value
+    return config
+
 class RealESRGANBot:
     def __init__(self, api_id, api_hash, bot_token):
         self.client = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
@@ -60,6 +68,45 @@ Real-ESRGAN项目地址: https://github.com/xinntao/Real-ESRGAN
         self.client.start()
         self.client.run_until_disconnected()
 
+
+    async def test_mode(self):
+        print("Running in test mode. Checking basic functionality...")
+
+        # Testing os and sys by checking the current working directory
+        try:
+            print(f"Current working directory: {os.getcwd()}")
+            print(f"System platform: {sys.platform}")
+            print("os & sys: OK")
+        except Exception as e:
+            print(f"Error with os or sys: {e}")
+            sys.exit(1)
+
+    # Testing uuid by generating a random UUID
+        try:
+            test_uuid = uuid.uuid4()
+            print(f"Generated UUID: {test_uuid}")
+            print("uuid: OK")
+        except Exception as e:
+            print(f"Error with uuid: {e}")
+            sys.exit(1)
+
+    # Testing Telethon by attempting to create a session
+        try:
+            await self.client.get_me()
+            print("Telethon: OK")
+        except Exception as e:
+            print(f"Error with Telethon: {e}")
+            sys.exit(1)
+
+    # Add more library checks as needed here
+        print("All library tests completed successfully.")
+
 if __name__ == "__main__":
-    bot = RealESRGANBot(api_id, api_hash, bot_token)
-    bot.run()
+    config = load_config()
+    bot = RealESRGANBot(config['api_id'], config['api_hash'], config['bot_token'])
+
+    if "--test" in sys.argv:
+        import asyncio
+        asyncio.get_event_loop().run_until_complete(bot.test_mode())
+    else:
+        bot.run()
