@@ -1,7 +1,6 @@
 import os
 import uuid
 from telethon import TelegramClient, events
-from tg_bot_config import api_hash, api_id, bot_token
 
 def load_config(filename="tg_bot_config.txt"):
     config = {}
