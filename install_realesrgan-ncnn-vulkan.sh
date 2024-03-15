@@ -35,7 +35,7 @@ download_realesrgan() {
         while true; do
             echo "Select the download source for Real-ESRGAN (Default: GitHub):"
             echo "0. GitHub"
-            echo "1. jsDelivr CDN"
+            echo "1. mirror.ghproxy.com"
             read -p "Enter your choice (0 or 1). Press Enter for default [0]: " choice
             
             # 如果用户没有输入，使用默认GitHub源
@@ -53,7 +53,7 @@ download_realesrgan() {
 
     case "$choice" in
         0) url="https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan/releases/download/v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip";;
-        1) url="https://cdn.jsdelivr.net/gh/xinntao/Real-ESRGAN-ncnn-vulkan@v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip";;
+        1) url="https://mirror.ghproxy.com/https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan/releases/download/v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip";;
     esac
 
     wget $url || { echo "Failed to download Real-ESRGAN. Exiting."; exit 1; }
