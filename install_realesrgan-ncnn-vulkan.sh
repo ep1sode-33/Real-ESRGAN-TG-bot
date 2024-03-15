@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# 检查是否有 --noconfirm 参数
+for arg in "$@"
+do
+    if [ "$arg" == "--noconfirm" ]; then
+        noconfirm=true
+    fi
+done
+
 install_wget() {
     if [ -f /etc/debian_version ]; then
         sudo apt-get update && sudo apt-get install wget -y
@@ -21,25 +29,37 @@ install_wget() {
 }
 
 download_realesrgan() {
-    while true; do
-        echo "Select the download source for Real-ESRGAN:"
-        echo "0. GitHub"
-        echo "1. jsDelivr CDN"
-        read -p "Enter your choice (0 or 1): " choice
+    if [ "$noconfirm" == true ]; then
+        choice=0 # 自动选择GitHub源
+    else
+        while true; do
+            echo "Select the download source for Real-ESRGAN (Default: GitHub):"
+            echo "0. GitHub"
+            echo "1. jsDelivr CDN"
+            read -p "Enter your choice (0 or 1). Press Enter for default [0]: " choice
+            
+            # 如果用户没有输入，使用默认GitHub源
+            if [ -z "$choice" ]; then
+                choice=0
+            fi
 
-        case "$choice" in
-            0) url="https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan/releases/download/v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip"
-               break;;
-            1) url="https://cdn.jsdelivr.net/gh/xinntao/Real-ESRGAN-ncnn-vulkan@v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip"
-               break;;
-            *) echo "Invalid choice. Please try again.";;
-        esac
-    done
+            if [[ "$choice" == "0" || "$choice" == "1" ]]; then
+                break
+            else
+                echo "Invalid choice. Please try again."
+            fi
+        done
+    fi
+
+    case "$choice" in
+        0) url="https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan/releases/download/v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip";;
+        1) url="https://cdn.jsdelivr.net/gh/xinntao/Real-ESRGAN-ncnn-vulkan@v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip";;
+    esac
 
     wget $url || { echo "Failed to download Real-ESRGAN. Exiting."; exit 1; }
 }
 
-# Check if wget is installed, if not, install it
+# 检查是否安装了 wget
 if ! command -v wget > /dev/null; then
     echo "wget not found. Installing wget..."
     install_wget
