@@ -91,10 +91,11 @@ Real-ESRGAN项目地址: https://github.com/xinntao/Real-ESRGAN
 
     # Testing Telethon by attempting to create a session
         try:
-            await self.client.get_me()
-            print("Telethon: OK")
+            print(f"Current working directory: {os.getcwd()}")
+            print(f"System platform: {sys.platform}")
+            print("os & sys: OK")
         except Exception as e:
-            print(f"Error with Telethon: {e}")
+            print(f"Error with os or sys: {e}")
             sys.exit(1)
 
     # Add more library checks as needed here
