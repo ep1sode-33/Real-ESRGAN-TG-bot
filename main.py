@@ -1,5 +1,7 @@
 import os
 import uuid
+import sys
+import socks
 from telethon import TelegramClient, events
 
 def load_config(filename="tg_bot_config.txt"):
