@@ -30,30 +30,24 @@ install_wget() {
 
 download_realesrgan() {
     if [ "$noconfirm" == true ]; then
-        choice=0 # 自动选择GitHub源
+        choice=0 # 使用 --noconfirm 参数时，默认选择GitHub源
     else
-        while true; do
-            echo "Select the download source for Real-ESRGAN (Default: GitHub):"
-            echo "0. GitHub"
-            echo "1. mirror.ghproxy.com"
-            read -p "Enter your choice (0 or 1). Press Enter for default [0]: " choice
-            
-            # 如果用户没有输入，使用默认GitHub源
-            if [ -z "$choice" ]; then
-                choice=0
-            fi
-
-            if [[ "$choice" == "0" || "$choice" == "1" ]]; then
-                break
-            else
-                echo "Invalid choice. Please try again."
-            fi
-        done
+        echo "Select the download source for Real-ESRGAN (Default: GitHub):"
+        echo "0. GitHub"
+        echo "1. mirror.ghproxy.com"
+        read -p "Enter your choice (0 or 1). Press Enter for default [0]: " choice
+        
+        # 如果用户没有输入，使用默认GitHub源
+        if [ -z "$choice" ]; then
+            choice=0
+        fi
     fi
 
     case "$choice" in
-        0) url="https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan/releases/download/v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip";;
-        1) url="https://mirror.ghproxy.com/https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan/releases/download/v0.2.0/realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip";;
+        0) url="https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesrgan-ncnn-vulkan-20220424-ubuntu.zip";;
+        1) url="https://mirror.ghproxy.com/https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesrgan-ncnn-vulkan-20220424-ubuntu.zip";;
+        *) echo "Invalid choice. Defaulting to GitHub source."
+           url="https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.5.0/realesrgan-ncnn-vulkan-20220424-ubuntu.zip";;
     esac
 
     wget $url || { echo "Failed to download Real-ESRGAN. Exiting."; exit 1; }
@@ -67,9 +61,12 @@ fi
 
 download_realesrgan
 
-unzip realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip || { echo "Failed to unzip Real-ESRGAN. Exiting."; exit 1; }
-sudo mv ./realesrgan-ncnn-vulkan-v0.2.0-ubuntu/realesrgan-ncnn-vulkan /usr/bin/realesrgan-ncnn-vulkan
+# 解压下载的文件，排除指定的文件
+unzip realesrgan-ncnn-vulkan-20220424-ubuntu.zip -x README_ubuntu.md onepiece_demo.mp4 input2.jpg input.jpg
 
-rm -r ./realesrgan-ncnn-vulkan-v0.2.0-ubuntu
-rm ./realesrgan-ncnn-vulkan-v0.2.0-ubuntu.zip
+# 将必要的文件移动到/usr/bin，保留目录结构
+sudo find . -type f -not -name 'README_ubuntu.md' -not -name 'onepiece_demo.mp4' -not -name 'input.jpg' -not -name 'input2.jpg' -exec mv {} /usr/bin/ \;
+
+rm -r ./models
+rm realesrgan-ncnn-vulkan-20220424-ubuntu.zip
 echo "Finished"
