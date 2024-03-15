@@ -61,12 +61,12 @@ fi
 
 download_realesrgan
 
-# 解压下载的文件，排除指定的文件
-unzip realesrgan-ncnn-vulkan-20220424-ubuntu.zip -x README_ubuntu.md onepiece_demo.mp4 input2.jpg input.jpg
+# 使用 unzip 的 -x 选项排除不需要的文件，并保留目录结构解压到指定位置
+unzip realesrgan-ncnn-vulkan-20220424-ubuntu.zip -x README_ubuntu.md onepiece_demo.mp4 input2.jpg input.jpg -d /tmp/realesrgan-ncnn-vulkan
 
-# 将必要的文件移动到/usr/bin，保留目录结构
-sudo find . -type f -not -name 'README_ubuntu.md' -not -name 'onepiece_demo.mp4' -not -name 'input.jpg' -not -name 'input2.jpg' -exec mv {} /usr/bin/ \;
+# 将解压的文件移动到 /usr/bin，保留目录结构，并覆盖任何现有文件
+sudo cp -r /tmp/realesrgan-ncnn-vulkan/* /usr/bin/
+sudo rm -rf /tmp/realesrgan-ncnn-vulkan
 
-rm -r ./models
 rm realesrgan-ncnn-vulkan-20220424-ubuntu.zip
 echo "Finished"
