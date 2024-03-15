@@ -22,7 +22,7 @@ jobs:
             python3 -m pip install -r requirements.txt
           fi
           chmod +x ./install_realesrgan-ncnn-vulkan.sh
-          bash ./install_realesrgan-ncnn-vulkan.sh
+          bash install_realesrgan-ncnn-vulkan.sh --noconfirm
 
       - name: Install neofetch
         run: |
