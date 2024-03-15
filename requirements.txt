@@ -1,3 +1,5 @@
 retrying
 telethon
 uuid
+pysocks
+socks5
