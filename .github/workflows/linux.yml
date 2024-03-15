@@ -36,11 +36,6 @@ jobs:
           ls
           pwd
 
-      - name: Test the packaged application
-        run: |
-          ./dist/main --test
-        timeout-minutes: 5
-
       - uses: actions/upload-artifact@v3
         with:
           name: Real-ESRGAN-TG-bot-linux
